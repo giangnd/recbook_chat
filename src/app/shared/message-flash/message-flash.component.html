@@ -1,0 +1,15 @@
+<div id="message-flash" class="{{blockPosition}}">
+  <div *ngFor="let mes of messageStorage" class="alert alert-{{mes.cssClass}} {{mes.visible}}" role="alert">
+      <div class="icon">
+          <span *ngIf="mes.cssClass == 'default'" class="fa fa-commenting-o"></span>
+          <span *ngIf="mes.cssClass == 'info'" class="fa fa-info"></span>
+          <span *ngIf="mes.cssClass == 'success'" class="fa fa-check"></span>
+          <span *ngIf="mes.cssClass == 'warning'" class="fa fa-exclamation"></span>
+          <span *ngIf="mes.cssClass == 'danger'" class="fa fa-exclamation-triangle"></span>
+      </div>
+      <button type="button" class="close ml-2" (click)="removeMessage(mes.id)">
+          <span aria-hidden="true">&times;</span>
+      </button>
+      <strong></strong> {{mes.message}}
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div id="form-area">
+  <!-- Default form login -->
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="text-center border border-light p-5">
+
+    <p class="h4 mb-4">Đăng nhập</p>
+
+    <!-- Email -->
+    <input [(ngModel)]="user.email" #email="ngModel" type="email" name="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Tên đăng nhập/Email" required>
+    <validate-message [label]="'Tên đăng nhập/Email'" [input]="email" [submited]="loginForm.submitted"></validate-message>
+
+    <!-- Password -->
+    <input [(ngModel)]="user.password" #password="ngModel" type="password" name="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Mật khẩu" minlength="6" required>
+    <validate-message [label]="'Mật khẩu'" [input]="password" [submited]="loginForm.submitted" [minlength]="6"></validate-message>
+
+    <!-- Sign in button -->
+    <button class="btn btn-info btn-block my-4" type="submit" [disabled]="!user.email || !user.password || user.password.length < 6">Đăng nhập</button>
+
+  </form>
+  <!-- Default form login -->
+</div>

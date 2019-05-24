@@ -1,0 +1,8 @@
+<div class="error-text" *ngIf="hasErrors() && (input.dirty || submited)">
+  <p class="alert alert-warning" *ngIf="input.errors && input.errors.required"><i class="fa fa-warning"></i> {{errorHelper.required(label)}}</p>
+  <p class="alert alert-warning" *ngIf="input.errors && input.errors.email && input.value"><i class="fa fa-warning"></i> {{errorHelper.invapdEmail(label)}}</p>
+  <p class="alert alert-warning" *ngIf="input.errors && input.errors.pattern"><i class="fa fa-warning"></i> {{errorHelper.pattern(invapdMessage,label)}}</p>
+  <p class="alert alert-warning" *ngIf="input.errors && input.errors.minlength"><i class="fa fa-warning"></i> {{errorHelper.minlength(minlength,label)}}</p>
+  <p class="alert alert-warning" *ngIf="input.errors && input.errors.maxlength"><i class="fa fa-warning"></i> {{errorHelper.maxlength(maxlength,label)}}</p>
+  <p class="alert alert-warning" *ngIf="equal && input.value !== equal && input.value"><i class="fa fa-warning"></i> {{errorHelper.notequal(label,equalTo,invapdMessage)}}</p>
+</div>
