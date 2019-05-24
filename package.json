@@ -32,6 +32,7 @@
     "lodash": "^4.17.11",
     "moment-timezone": "^0.5.25",
     "ng-flash-messages": "^0.3.0",
+    "ngx-bootstrap": "^4.2.0",
     "rxjs": "^6.3.3",
     "socket.io-client": "^2.2.0",
     "tslib": "^1.9.0",

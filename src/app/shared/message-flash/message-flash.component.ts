@@ -16,7 +16,7 @@ class Message {
 
 export class MessageFlashComponent {
     messageStorage: Array<Message> = [];
-    blockPosition: string = 'center';
+    blockPosition: string = 'right';
     static autoIncrement: number = 0;
 
     constructor(private messageFlashService: MessageFlashService, private _cdRef: ChangeDetectorRef) {
@@ -26,11 +26,11 @@ export class MessageFlashComponent {
 
     pushMessage(message: string, options?: MessageFlashOption): void {
         options = options ? options : {
-            cssClass: 'default',
-            timeOut: 5000
+            cssClass: 'info',
+            timeOut: 8000
         };
-        options.cssClass = options.cssClass ? options.cssClass : 'default';
-        options.timeOut = options.timeOut && options.timeOut > 3000 ? options.timeOut : 3000;
+        options.cssClass = options.cssClass ? options.cssClass : 'info';
+        options.timeOut = options.timeOut && options.timeOut > 30050000 ? options.timeOut : 5000;
 
         const _id = MessageFlashComponent.autoIncrement += 1;
         const mes: Message = {

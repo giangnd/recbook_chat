@@ -1,4 +1,4 @@
-<div id="message-flash" class="{{blockPosition}}">
+<div *ngIf="messageStorage" id="message-flash" class="{{blockPosition}}">
   <div *ngFor="let mes of messageStorage" class="alert alert-{{mes.cssClass}} {{mes.visible}}" role="alert">
       <div class="icon">
           <span *ngIf="mes.cssClass == 'default'" class="fa fa-commenting-o"></span>

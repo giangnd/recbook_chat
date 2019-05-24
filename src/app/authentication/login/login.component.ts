@@ -1,9 +1,9 @@
+import { MessageFlashService } from 'src/app/shared/services/message-flash.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from '../../models/user';
 import { UserService } from '../../shared/services/user.service';
 import { StorageService } from '../../core/services/storage.service';
 import { Router } from '@angular/router';
-import { NgFlashMessageService } from 'ng-flash-messages';
 import { RegexHelper } from '../../shared/helpers/regex.helper';
 
 @Component({
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(
     @Input()
     private router: Router,
-    private messageService: NgFlashMessageService,
+    private messageService: MessageFlashService,
     private storageService: StorageService,
     private userService: UserService,
   ) { }
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   callback(errMsg, response) {
     if (errMsg) {
-      return this.messageService.showFlashMessage({ messages: [errMsg], type: 'warning' });
+      return this.messageService.flashWarning(errMsg);
     }
     const returnUrl = this.storageService.get('return-url');
     if (returnUrl) {

@@ -31,8 +31,8 @@ class MessageFlashService {
         this.flashMessage(message, options);
     }
     
-    public flashMessage(message: string, options?: MessageFlashOption): void {};
-    public setPosition(position: string): void {};
+    public flashMessage: (message: string, options?: MessageFlashOption) => void;
+    public setPosition: (position: string) => void;
 }
 
 export { MessageFlashService, MessageFlashOption }

@@ -1,18 +1,21 @@
 import { User } from './../models/user';
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { SocketService } from '../shared/services/socket.services';
 import { UserService } from '../shared/services/user.service';
-import { ActivatedRoute } from '@angular/router';
-import { NgFlashMessageService } from 'ng-flash-messages';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import * as moment from "moment-timezone";
+import { GroupComponent } from './group/group.component';
+import { MessageFlashService } from '../shared/services/message-flash.service';
+import { Group } from '../models/group';
 moment.tz.setDefault('Asia/Ho_Chi_Minh');
 const dateFormat = "HH:mm:ss | DD-MM-YYYY";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.sass']
+  styleUrls: ['./home.component.sass'],
+  entryComponents: [GroupComponent],
 })
 export class HomeComponent implements OnInit {
   user: User;
@@ -22,6 +25,10 @@ export class HomeComponent implements OnInit {
     body: '',
   };
   histories: any = [];
+  room: any = {
+    name: '',
+    avatar: '',
+  };
 
   @ViewChild('scrollMe') item: ElementRef;
   scrollMess: number = null;
@@ -30,13 +37,17 @@ export class HomeComponent implements OnInit {
   typingTimeout: any;
   typingBreak: boolean = false;
 
+  @ViewChild('group') groupCtrl: GroupComponent;
+
   constructor(
+    private router: Router,
+    private activedRouter: ActivatedRoute,
     private userService: UserService,
     private socketService: SocketService,
     private activatedRoute: ActivatedRoute,
-    private messageService: NgFlashMessageService,
+    private messageService: MessageFlashService,
   ) {
-    
+
   }
 
   ngOnInit() {
@@ -95,27 +106,30 @@ export class HomeComponent implements OnInit {
 
     //nhan thong bao co user moi online
     this.socketService.get('server_send_user_status').subscribe((data: User) => {
-      this.messageService.showFlashMessage({
-        messages: [`${data.name} đang online`],
-        timeout: 5000,
-        type: 'info',
-      });
+      this.messageService.flashInfo(`${data.name} vừa online`);
     });
 
   }
 
-  onTyping(value: any) {
+  onCreateGroup() {
+    this.groupCtrl.create();
+  }
+
+  onTyping(e: any) {
     this.socketService.send('client_send_typing_status');
+    const el = document.getElementById('write_msg');
   }
 
   clearTypingStatus() {
     this.typing = '';
     this.typingBreak = false;
     clearTimeout(this.typingTimeout);
+
   }
 
-  onSendMsg() {
-    if (!this.document.body) {
+  onSendMsg(e: any) {
+    this.document.body = this.document.body.trim();
+    if (!this.document.body.length) {
       return;
     }
     this.socketService.send('client_send_document', this.document).subscribe(res => {
@@ -123,7 +137,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onScroll(){
+  onScroll() {
     this.scrollMess = this.item.nativeElement.scrollHeight;
   }
 

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  template: '<ng-flash-message></ng-flash-message><router-outlet></router-outlet>',
+  template: '<message-flash></message-flash><router-outlet></router-outlet>',
 })
 export class AppComponent implements OnInit {
   appName: string = environment.appName;

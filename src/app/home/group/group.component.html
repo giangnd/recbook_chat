@@ -1,0 +1,10 @@
+<div *ngIf="groups">
+  <div *ngFor="let item of groups" class="chat_list" (click)="onSelectGroup(item)">
+    <div class="chat_people">
+      <div class="chat_ib">
+        <h5>{{item.name}}</h5>
+        <p>Ngày tạo: {{item.time}}</p>
+      </div>
+    </div>
+  </div>
+</div>

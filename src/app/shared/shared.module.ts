@@ -11,10 +11,13 @@ import { UserService } from './services/user.service';
 import { UserResolver } from './resolves/user.resolver';
 import { ValidateMessageComponent } from './validate-message/validate-message.component';
 import { SocketService } from './services/socket.services';
-
+import { GroupService } from './services/group.service';
+import { MessageFlashComponent } from './message-flash/message-flash.component';
+import { PageLoadingComponent } from './page-loading/page-loading.component';
+import { LoadingXhrProvider } from './providers/loading-xhr.provider';
 
 @NgModule({
-  declarations: [MessageLoadingComponent, ValidateMessageComponent],
+  declarations: [MessageLoadingComponent, ValidateMessageComponent, MessageFlashComponent, PageLoadingComponent],
   imports: [
     CommonModule,
     HttpModule,
@@ -23,10 +26,12 @@ import { SocketService } from './services/socket.services';
   exports: [
     MessageLoadingComponent,
     ValidateMessageComponent,
+    MessageFlashComponent,
+    PageLoadingComponent,
   ],
   providers: [
     {
-      provide: BrowserXhr,
+      provide: BrowserXhr, useClass: LoadingXhrProvider,
     },
     AuthGuardService,
     UnAuthGuardService,
@@ -35,6 +40,7 @@ import { SocketService } from './services/socket.services';
     UserService,
     UserResolver,
     SocketService,
+    GroupService,
   ]
 })
 export class SharedModule { }

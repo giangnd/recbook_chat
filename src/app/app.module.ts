@@ -1,7 +1,9 @@
+import { MessageFlashService } from 'src/app/shared/services/message-flash.service';
 import { NgFlashMessagesModule } from 'ng-flash-messages';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -26,8 +28,9 @@ import { RouterModule } from '@angular/router';
     UserModule,
     HomeModule,
     NgFlashMessagesModule.forRoot(),
+    ModalModule.forRoot(),
   ],
-  providers: [],
+  providers: [BsModalRef, MessageFlashService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

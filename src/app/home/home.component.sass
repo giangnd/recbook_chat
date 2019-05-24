@@ -21,7 +21,8 @@
     height: calc(100% - 350px)
     overflow-y: scroll
     overflow-x: hidden
-    max-height: 475px
+    min-height: 420px
+    max-height: 580px
     font-size: 14px
 
 .type_msg
@@ -29,7 +30,7 @@
 
 .input_msg_write
     position: absolute
-    bottom: -70px
+    bottom: calc(100% - 108px)
     width: 98%
     z-index: 999
 
@@ -41,17 +42,22 @@
 
 .inbox_chat
     height: calc(100% - 480px)
+    min-height: 350px
+    max-height: 500px
 
 .bottom_bar
     min-height: 40px
+    padding: 10px 29px 10px 20px
 
 .write_msg
     width: 85%
-    min-height: 50px
-    border: 0
+    min-height: 80px
+    border: 1px solid #dedede
     font-size: 14px
     color: #4e4e4e
     resize: none
+    padding: 10px
+    border-radius: 5px
 
 input, textarea
     outline: none !important
@@ -71,7 +77,7 @@ input, textarea
 
 .member_list
     p
-        line-height: 1.1em
+        line-height: 1.4em
         small
             font-size: 11px
             font-style: italic
@@ -93,19 +99,21 @@ input, textarea
 .msg_name
     font-size: 15px
 
-.recent_heading h4, .srch_bar h4
-    color: #0465ac
+.recent_heading h4 a, .srch_bar h4  a
     font-size: 16px
     line-height: 29px
     padding: 0 5px
     text-align: center
+    color: #0465ac
+    display: block
 
-.recent_heading h4:hover, .srch_bar h4:hover
+.recent_heading h4 a:hover, .srch_bar h4 a:hover
     background-color: #59B4D3
-    color: #ffffff
     cursor: pointer
+    color: #ffffff
+    border: 1px solid #ffffff
 
-.recent_heading h4.active, .srch_bar h4.active
+.recent_heading h4 a.active, .srch_bar h4 a.active
     border: 1px solid #ccc
 
 .search-bar

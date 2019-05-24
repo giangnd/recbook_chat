@@ -6,112 +6,43 @@
         <div *ngIf="user" class="user_info mb-3 p-2 border-bottom border-light clearfix">
           <img class="avatar" src="{{user.avatar}}" alt="">
           <p class="info_name">Hello {{user.name}}!</p>
+          <button type="button" class="pull-right btn btn-sm btn-outline-warning btn-rounded waves-effect"
+            (click)="logout()">Thoát</button>
         </div>
 
         <div class="headind_srch">
-          <div class="stylish-input-group">
-            <input type="text" class="search-bar border-light" placeholder="Tìm kiếm...">
-          </div>
+          <form class="form-inline md-form form-sm active-purple active-purple-2 mt-2">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search">
+          </form>
+
           <div class="recent_heading">
-            <h4 class="active">Lịch sử</h4>
+            <a [routerLink]="['/histories']" [routerLinkActive]="['active', 'disabled', 'btn-primary']"
+              class="btn btn-sm d-block">Lịch sử</a>
           </div>
           <div class="srch_bar">
-            <h4>Nhóm</h4>
+            <a [routerLink]="['/groups']" [routerLinkActive]="['active', 'disabled', 'btn-primary']"
+              class="btn btn-sm d-block">Nhóm</a>
           </div>
         </div>
         <div class="inbox_chat scroll">
-          <div class="chat_list active_chat">
-            <div class="chat_people">
-              <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="chat_ib">
-                <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                <p>Test, which is a new approach to have all solutions
-                  astrology under one roof.</p>
-              </div>
-            </div>
-          </div>
-          <div class="chat_list">
-            <div class="chat_people">
-              <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="chat_ib">
-                <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                <p>Test, which is a new approach to have all solutions
-                  astrology under one roof.</p>
-              </div>
-            </div>
-          </div>
-          <div class="chat_list">
-            <div class="chat_people">
-              <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="chat_ib">
-                <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                <p>Test, which is a new approach to have all solutions
-                  astrology under one roof.</p>
-              </div>
-            </div>
-          </div>
-          <div class="chat_list">
-            <div class="chat_people">
-              <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="chat_ib">
-                <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                <p>Test, which is a new approach to have all solutions
-                  astrology under one roof.</p>
-              </div>
-            </div>
-          </div>
-          <div class="chat_list">
-            <div class="chat_people">
-              <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="chat_ib">
-                <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                <p>Test, which is a new approach to have all solutions
-                  astrology under one roof.</p>
-              </div>
-            </div>
-          </div>
-          <div class="chat_list">
-            <div class="chat_people">
-              <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="chat_ib">
-                <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                <p>Test, which is a new approach to have all solutions
-                  astrology under one roof.</p>
-              </div>
-            </div>
-          </div>
-          <div class="chat_list">
-            <div class="chat_people">
-              <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="chat_ib">
-                <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                <p>Test, which is a new approach to have all solutions
-                  astrology under one roof.</p>
-              </div>
-            </div>
-          </div>
-          <div class="chat_list">
-            <div class="chat_people">
-              <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="chat_ib">
-                <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                <p>Test, which is a new approach to have all solutions
-                  astrology under one roof.</p>
-              </div>
-            </div>
-          </div>
+          <app-group #groupCtrl></app-group>
+          <app-history></app-history>
         </div>
 
-        <div class="bottom_bar">
-
+        <div class="bottom_bar clearfix">
+          <div class="btn-group pull-right" role="group" aria-label="Vertical button group">
+            <button class="btn btn-sm btn-deep-orange" type="button" (click)="onCreateGroup()">Tạo nhóm</button>
+            <!-- <button class="btn btn-sm" type="button" >Tạo nhóm</button> -->
+          </div>
         </div>
       </div>
 
 
       <div class="mesgs col-md-6 col-sm-6">
         <div class="group_info mb-3 p-2 border-bottom border-light clearfix">
-          <img class="avatar" src="/assets/img/avatar.png" alt="giang">
-          <p class="info_name">Vu Duc Hong</p>
+          <img *ngIf="room.avatar" class="avatar" src="{{room.avatar}}">
+          <p class="info_name">{{room.name}}</p>
         </div>
 
         <div #scrollMe [scrollTop]="scrollMess" class="msg_history">
@@ -145,9 +76,9 @@
 
         <div class="type_msg">
           <div class="input_msg_write">
-            <form #msgForm="ngForm" (ngSubmit)="onSendMsg()" (keyup.enter)="onSendMsg()">
-              <textarea [(ngModel)]="document.body" name="message" class="write_msg" placeholder="Nhập tin nhắn..." #msg
-                (keyup)="onTyping(msg.value)"></textarea>
+            <form #msgForm="ngForm" (ngSubmit)="onSendMsg()" (keyup.enter)="onSendMsg($event)">
+              <textarea [(ngModel)]="document.body" name="message" id="write_msg" class="write_msg"
+                placeholder="Nhập tin nhắn..." #msg (keyup)="onTyping($event)"></textarea>
               <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
               <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             </form>
