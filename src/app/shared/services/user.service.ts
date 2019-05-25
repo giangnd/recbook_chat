@@ -17,6 +17,10 @@ class UserService {
         private storageService: StorageService,
     ) { }
 
+    list(name: string): Observable<User[]> {
+        return this.apiConnector.requestAPI('get', `/user/all/?name=${name}`);
+    }
+
     login(user, callback) {
         this.apiConnector.requestAPI('post', '/auth/login', user).subscribe(response => {
             this.tokenService.setToken(response.token);
@@ -45,7 +49,7 @@ class UserService {
         }
         let apiUrl = '/auth/me';
         if (userId) {
-            apiUrl = `/user/${userId}`;
+            apiUrl = `/user/?id=${userId}`;
         }
         return this.apiConnector.requestAPI('get', apiUrl).pipe(
             tap(user => {

@@ -1,4 +1,4 @@
-export class History {
+export class Document {
     user_id: number;
     room_id: string;
     type: string;

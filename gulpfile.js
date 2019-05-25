@@ -13,10 +13,11 @@ const css = { src: './src/assets/sass/*.sass', dest: './src/assets/dist/css' };
 const distDir = './src/assets/dist';
 
 var vendorJs = [
-    './vendor/MDBootstrap/js/jquery-3.3.1.min.js',
+    './vendor/MDBootstrap/js/jquery-3.4.0.min.js',
     './vendor/MDBootstrap/js/bootstrap.min.js',
-    './vendor/MDBootstrap/js/popper.min.js',
     './vendor/MDBootstrap/js/mdb.min.js',
+    './vendor/MDBootstrap/js/popper.min.js',
+    './src/assets/js/custom.js',
 ]
 
 var vendorCss = [

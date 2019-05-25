@@ -1,9 +1,11 @@
 <div *ngIf="groups">
-  <div *ngFor="let item of groups" class="chat_list" (click)="onSelectGroup(item)">
-    <div class="chat_people">
-      <div class="chat_ib">
+  <div *ngFor="let item of groups" class="chat_list" [ngClass]="{'active_chat':room.id==item._id}"
+    (click)="joinGroup(item)">
+    <div class="chat_people clearfix">
+      <div class="chat_ib clearfix">
+        <div class="chat_img" *ngIf="item.avatar"> <img src="{{item.avatar}}"> </div>
         <h5>{{item.name}}</h5>
-        <p>Ngày tạo: {{item.time}}</p>
+        <p *ngIf="item.members.length">{{item.members.length}} thành viên</p>
       </div>
     </div>
   </div>

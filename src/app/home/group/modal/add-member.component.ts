@@ -9,20 +9,19 @@ import { GroupService, Group } from '../../../shared/services/group.service';
 import * as _ from 'lodash';
 
 @Component({
-    selector: 'app-create-group',
-    templateUrl: './create-group.component.html',
+    selector: 'app-add-member',
+    templateUrl: './add-member.component.html',
 })
 
-export class CreateGroupComponent implements OnInit {
+export class AddMemberComponent implements OnInit {
     title: string;
     button: string;
     onClose: Subject<any>;
 
     @Input() group: any = {
-        name: '',
-        user_id: 0,
-        time: '',
+        members: [],
     };
+    newMembers: any;
 
     constructor(
         private router: Router,
@@ -41,6 +40,8 @@ export class CreateGroupComponent implements OnInit {
         this.title = title;
         this.group = body ? body : this.group;
         this.button = button;
+
+        console.log(this.group);
     }
 
     onSubmit() {
@@ -49,11 +50,7 @@ export class CreateGroupComponent implements OnInit {
 
         const userId = this.tokenService.getUserId();
         this.group.user_id = Number(userId);
-
-        const obversable = this.group && this.group['_id'] ?
-            this.groupService.update(this.group['_id'], this.group) :
-            this.groupService.create(this.group);
-
+        const obversable = this.groupService.update(this.group['_id'], this.group);
         obversable.subscribe(res => {
             this.onClose.next(res);
             this.close();

@@ -30,7 +30,7 @@
 
 .input_msg_write
     position: absolute
-    bottom: calc(100% - 108px)
+    bottom: calc(100% - 80px)
     width: 98%
     z-index: 999
 
@@ -42,7 +42,7 @@
 
 .inbox_chat
     height: calc(100% - 480px)
-    min-height: 350px
+    min-height: 420px
     max-height: 500px
 
 .bottom_bar
@@ -51,7 +51,7 @@
 
 .write_msg
     width: 85%
-    min-height: 80px
+    min-height: 40px
     border: 1px solid #dedede
     font-size: 14px
     color: #4e4e4e
@@ -90,6 +90,7 @@ input, textarea
 
 .sent_msg p
     border-radius: 15px 15px 0 15px
+    background: #0099FF
 
 .typing_status
     font-size: 12px
@@ -98,6 +99,9 @@ input, textarea
 
 .msg_name
     font-size: 15px
+
+.recent_heading, .srch_bar
+    width: 50%
 
 .recent_heading h4 a, .srch_bar h4  a
     font-size: 16px
@@ -125,3 +129,13 @@ input, textarea
     width: 100%
     font-size: 14px
     color: #4e4e4e
+
+.group_info
+    background-color: #055AA9
+    color: #ffffff
+    .group_name
+        float: left
+        line-height: 3em
+        margin-bottom: 0
+    .logo
+        max-width: 100px

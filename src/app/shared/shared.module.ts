@@ -15,6 +15,7 @@ import { GroupService } from './services/group.service';
 import { MessageFlashComponent } from './message-flash/message-flash.component';
 import { PageLoadingComponent } from './page-loading/page-loading.component';
 import { LoadingXhrProvider } from './providers/loading-xhr.provider';
+import { DocumentService } from './services/document.service';
 
 @NgModule({
   declarations: [MessageLoadingComponent, ValidateMessageComponent, MessageFlashComponent, PageLoadingComponent],
@@ -41,6 +42,7 @@ import { LoadingXhrProvider } from './providers/loading-xhr.provider';
     UserResolver,
     SocketService,
     GroupService,
+    DocumentService,
   ]
 })
 export class SharedModule { }

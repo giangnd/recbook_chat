@@ -7,7 +7,8 @@ import * as _ from 'lodash';
 import * as moment from "moment-timezone";
 import { GroupComponent } from './group/group.component';
 import { MessageFlashService } from '../shared/services/message-flash.service';
-import { Group } from '../models/group';
+import { DocumentService } from '../shared/services/document.service';
+import { MemberComponent } from './member/member.component';
 moment.tz.setDefault('Asia/Ho_Chi_Minh');
 const dateFormat = "HH:mm:ss | DD-MM-YYYY";
 
@@ -19,13 +20,17 @@ const dateFormat = "HH:mm:ss | DD-MM-YYYY";
 })
 export class HomeComponent implements OnInit {
   user: User;
-  members: Array<User> = [];
+
   document: any = {
     type: 'text',
     body: '',
   };
-  histories: any = [];
+  documents: any = [];
+
+  myGroup: boolean = false;
+
   room: any = {
+    id: '',
     name: '',
     avatar: '',
   };
@@ -36,8 +41,10 @@ export class HomeComponent implements OnInit {
   typing: string;
   typingTimeout: any;
   typingBreak: boolean = false;
+  typingEnabled: boolean = false;
 
-  @ViewChild('group') groupCtrl: GroupComponent;
+  @ViewChild('groupCtrl') groupCtrl: GroupComponent;
+  @ViewChild('memberCtrl') memberCtrl: MemberComponent;
 
   constructor(
     private router: Router,
@@ -46,11 +53,24 @@ export class HomeComponent implements OnInit {
     private socketService: SocketService,
     private activatedRoute: ActivatedRoute,
     private messageService: MessageFlashService,
+    private documentService: DocumentService,
   ) {
 
   }
 
   ngOnInit() {
+    this.activatedRoute.data.subscribe((data) => {
+      this.user = data.UserResolver;
+      this.socketService.send('client_send_user_info', this.user);
+      this.socketService.send('client_send_room_info');
+    });
+
+    //thong tin room hien tai
+    this.socketService.get('server_send_room_info').subscribe((room) => {
+      this.room = room;
+      this.onGetDocumentsInRoom();
+    });
+
     //nhan trang thai dang typing message
     this.socketService.get('server_send_typing_status').subscribe((name: string) => {
       if (!this.typingBreak) {
@@ -63,68 +83,71 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    //lay du lieu user
-    this.socketService.get('server_send_get_user_data').subscribe(() => {
-      this.activatedRoute.data.subscribe((data) => {
-        this.user = data.UserResolver;
-        this.user.avatar = this.user.avatar || '/assets/img/avatar.png';
-        this.socketService.send('client_send_user_info', this.user);
-      });
-    });
-
     //nhan danh sach lich su tai lieu
     this.socketService.get('server_send_history_documents').subscribe((documents: any) => {
       documents = _.map(documents, e => {
         e.time = moment().format(dateFormat);
         if (e.user.id == this.user.id) e.me = true; return e;
       });
-      this.histories = documents;
+      this.documents = documents;
     });
 
     //nhan va gui tin nhan den client
     this.socketService.get('server_send_document_this_client').subscribe((document: any) => {
       document.time = moment().format(dateFormat);
       document.me = true;
-      this.histories.push(document);
+      this.documents.push(document);
       this.onScroll();
     });
 
     //nhan va gui tin nhan den client khac
     this.socketService.get('server_send_document_other_client').subscribe((document: any) => {
       document.time = moment().format(dateFormat);
-      this.histories.push(document);
+      this.documents.push(document);
       this.clearTypingStatus();
       this.onScroll();
     });
 
-    //nhan danh sanh members
-    this.socketService.get('server_send_members_list').subscribe((data: User[]) => {
-      _.remove(data, (e: User) => e.id == this.user.id);
-      _.orderBy(data, ['online'], ['desc']);
-      this.members = data;
-    });
-
-    //nhan thong bao co user moi online
-    this.socketService.get('server_send_user_status').subscribe((data: User) => {
-      this.messageService.flashInfo(`${data.name} vừa online`);
+    this.socketService.get('server_send_existed_user').subscribe(() => {
+      this.userService.logout();
+      this.messageService.flashWarning('Bạn đang đăng nhập trên 1 thiết khác. Vui lòng thử lại sau.');
     });
 
   }
 
+  receiveGroup(event: any) {
+    this.myGroup = event.myRoom;
+    this.room = event.room;
+
+    this.onGetDocumentsInRoom();
+
+    // this.memberCtrl.getMembersInGroup(event);
+  }
+
+  onGetDocumentsInRoom() {
+    this.typingEnabled = true;
+    this.documents = [];
+    this.documentService.list(this.user.id, this.room.id).subscribe((data) => {
+      this.documents = data;
+    });
+  }
+
   onCreateGroup() {
-    this.groupCtrl.create();
+    this.groupCtrl.createGroup();
+  }
+
+  addMoreMember(){
+    this.groupCtrl.addUserToGroup();
   }
 
   onTyping(e: any) {
     this.socketService.send('client_send_typing_status');
-    const el = document.getElementById('write_msg');
   }
 
   clearTypingStatus() {
     this.typing = '';
     this.typingBreak = false;
     clearTimeout(this.typingTimeout);
-
   }
 
   onSendMsg(e: any) {
@@ -132,8 +155,16 @@ export class HomeComponent implements OnInit {
     if (!this.document.body.length) {
       return;
     }
+
     this.socketService.send('client_send_document', this.document).subscribe(res => {
-      this.document.body = '';
+      this.document.user_id = this.user.id;
+      this.document.room_id = this.room.id;
+
+      this.documentService.create(this.document).subscribe((res) => {
+        this.document.body = '';
+      });
+
+
     });
   }
 
@@ -142,6 +173,7 @@ export class HomeComponent implements OnInit {
   }
 
   logout() {
+    this.socketService.send('client_logout');
     this.userService.logout();
   }
 

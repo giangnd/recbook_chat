@@ -3,67 +3,81 @@
 
     <div class="row">
       <div class="inbox_people col-md-4 col-sm-4">
-        <div *ngIf="user" class="user_info mb-3 p-2 border-bottom border-light clearfix">
-          <img class="avatar" src="{{user.avatar}}" alt="">
-          <p class="info_name">Hello {{user.name}}!</p>
+        <div *ngIf="user" class="user_info mb-1 p-2 border-bottom border-light clearfix">
+          <div class="pull-left">
+            <img *ngIf="user.avatar" class="avatar" src="{{user.avatar}}" alt="">
+            <img *ngIf="!user.avatar" class="avatar" src="/assets/img/avatar.png" alt="">
+            <p class="info_name">
+              <b>Hi {{user.name}},</b>
+              <br>
+              <i style="font-size: 13px">Welcome to RecBook Webchat!</i>
+            </p>
+          </div>
           <button type="button" class="pull-right btn btn-sm btn-outline-warning btn-rounded waves-effect"
             (click)="logout()">Thoát</button>
         </div>
 
         <div class="headind_srch">
-          <form class="form-inline md-form form-sm active-purple active-purple-2 mt-2">
+          <form class="form-inline form-sm active-purple active-purple-2 mb-1">
             <i class="fa fa-search" aria-hidden="true"></i>
             <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search">
           </form>
 
-          <div class="recent_heading">
+          <!-- <div class="recent_heading">
             <a [routerLink]="['/histories']" [routerLinkActive]="['active', 'disabled', 'btn-primary']"
               class="btn btn-sm d-block">Lịch sử</a>
           </div>
           <div class="srch_bar">
             <a [routerLink]="['/groups']" [routerLinkActive]="['active', 'disabled', 'btn-primary']"
               class="btn btn-sm d-block">Nhóm</a>
-          </div>
+          </div> -->
         </div>
+
         <div class="inbox_chat scroll">
-          <app-group #groupCtrl></app-group>
-          <app-history></app-history>
+          <app-group #groupCtrl (messageRoomEvent)="receiveGroup($event)"></app-group>
         </div>
 
         <div class="bottom_bar clearfix">
           <div class="btn-group pull-right" role="group" aria-label="Vertical button group">
-            <button class="btn btn-sm btn-deep-orange" type="button" (click)="onCreateGroup()">Tạo nhóm</button>
-            <!-- <button class="btn btn-sm" type="button" >Tạo nhóm</button> -->
+            <button class="btn btn-sm btn-cyan" type="button" (click)="onCreateGroup()">Tạo nhóm</button>
           </div>
         </div>
       </div>
 
 
       <div class="mesgs col-md-6 col-sm-6">
-        <div class="group_info mb-3 p-2 border-bottom border-light clearfix">
-          <img *ngIf="room.avatar" class="avatar" src="{{room.avatar}}">
-          <p class="info_name">{{room.name}}</p>
+        <div class="group_info text-center mb-3 p-2 border-bottom border-light clearfix">
+          <div class="pull-left clearfix">
+            <img *ngIf="room.avatar" class="avatar logo" src="{{room.avatar}}" alt="">
+            <img *ngIf="!room.avatar" class="avatar logo" src="/assets/img/logo.png" alt="">
+            <p class="group_name"><b>{{room.name}}</b></p>
+          </div>
+
+          <div *ngIf="myGroup" class="pull-right">
+            <button class="btn btn-sm btn-amber" type="button" (click)="addMoreMember()">Thêm thành viên</button>
+          </div>
         </div>
 
         <div #scrollMe [scrollTop]="scrollMess" class="msg_history">
-          <div *ngFor="let item of histories">
+          <div *ngFor="let item of documents">
             <div *ngIf="!item.me" class="incoming_msg">
               <div class="incoming_msg_img">
-                <img src="{{item.user.avatar}}" alt="{{item.user.name}}">
+                <img *ngIf="item.user.avatar" class="avatar" src="{{item.user.avatar}}" alt="">
+                <img *ngIf="!item.user.avatar" class="avatar" src="/assets/img/avatar.png" alt="">
               </div>
               <div class="received_msg">
                 <div class="received_withd_msg">
                   <b class="msg_name">{{item.user.name}}</b>
-                  <p *ngIf="item.message.type=='text'" [innerHTML]="item.message.body"></p>
-                  <span class="time_date"> {{item.time}}</span>
+                  <p *ngIf="item.type=='text'" [innerHTML]="item.body" class="material-tooltip-smaller"
+                  data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{item.time}}"></p>
                 </div>
               </div>
             </div>
 
             <div *ngIf="item.me" class="outgoing_msg">
               <div class="sent_msg">
-                <p *ngIf="item.message.type=='text'" [innerHTML]="item.message.body"></p>
-                <span class="time_date"> {{item.time}}</span>
+                <p *ngIf="item.type=='text'" [innerHTML]="item.body" class="material-tooltip-smaller"
+                  data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{item.time}}"></p>
               </div>
             </div>
           </div>
@@ -77,8 +91,11 @@
         <div class="type_msg">
           <div class="input_msg_write">
             <form #msgForm="ngForm" (ngSubmit)="onSendMsg()" (keyup.enter)="onSendMsg($event)">
-              <textarea [(ngModel)]="document.body" name="message" id="write_msg" class="write_msg"
-                placeholder="Nhập tin nhắn..." #msg (keyup)="onTyping($event)"></textarea>
+              <div class="">
+                <textarea [(ngModel)]="document.body" name="message" id="write_msg"
+                  class="write_msg md-textarea form-control" placeholder="Nhập tin nhắn..." #msg
+                  (keyup)="onTyping($event)" [disabled]="!typingEnabled"></textarea>
+              </div>
               <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
               <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             </form>
@@ -88,22 +105,9 @@
 
 
       <div class="status_people col-md-2 col-sm-2">
-        <div class="member_list">
-          <div class="mb-3 p-2 border-bottom border-light clearfix">
-            <p class="info_name">Thành viên</p>
-          </div>
-          <ul class="list-unstyled">
-            <li *ngFor="let item of members" class="clearfix">
-              <img class="avatar w-25" src="{{item.avatar}}" alt="{{item.name}}">
-              <p>{{item.name}}
-                <br>
-                <small *ngIf="item.online==1">online</small>
-                <small *ngIf="item.online==2">offline</small>
-              </p>
-            </li>
-          </ul>
-        </div>
+        <app-member #memberCtrl></app-member>
       </div>
+
     </div>
 
   </div>

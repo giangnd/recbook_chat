@@ -5,7 +5,6 @@ import { DataService } from './data.service';
 
 @Injectable()
 class GroupService {
-    group: Group;
     constructor(
         private apiConnector: DataService,
     ) { }
@@ -20,6 +19,10 @@ class GroupService {
 
     update(id: string, data: Group): Observable<any> {
         return this.apiConnector.requestAPI('patch', `/group/${id}`, data)
+    }
+
+    getMembers(id: string): Observable<any> {
+        return this.apiConnector.requestAPI('get', `/group/members/${id}`)
     }
 }
 
