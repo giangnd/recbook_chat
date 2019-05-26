@@ -18,10 +18,10 @@
         </div>
 
         <div class="headind_srch">
-          <form class="form-inline form-sm active-purple active-purple-2 mb-1">
+          <!-- <form class="form-inline form-sm active-purple active-purple-2 mb-1">
             <i class="fa fa-search" aria-hidden="true"></i>
             <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search">
-          </form>
+          </form> -->
 
           <!-- <div class="recent_heading">
             <a [routerLink]="['/histories']" [routerLinkActive]="['active', 'disabled', 'btn-primary']"
@@ -39,6 +39,10 @@
 
         <div class="bottom_bar clearfix">
           <div class="btn-group pull-right" role="group" aria-label="Vertical button group">
+            <button *ngIf="allowLeaveRoom" class="btn btn-sm btn-secondary" type="button" (click)="onLeaveGroup()">Rời
+              nhóm</button>
+            <button *ngIf="myGroup" class="btn btn-sm btn-amber" type="button" (click)="addMoreMember()">Thêm thành
+              viên</button>
             <button class="btn btn-sm btn-cyan" type="button" (click)="onCreateGroup()">Tạo nhóm</button>
           </div>
         </div>
@@ -46,40 +50,40 @@
 
 
       <div class="mesgs col-md-6 col-sm-6">
-        <div class="group_info text-center mb-3 p-2 border-bottom border-light clearfix">
-          <div class="pull-left clearfix">
-            <img *ngIf="room.avatar" class="avatar logo" src="{{room.avatar}}" alt="">
-            <img *ngIf="!room.avatar" class="avatar logo" src="/assets/img/logo.png" alt="">
-            <p class="group_name"><b>{{room.name}}</b></p>
-          </div>
-
-          <div *ngIf="myGroup" class="pull-right">
-            <button class="btn btn-sm btn-amber" type="button" (click)="addMoreMember()">Thêm thành viên</button>
-          </div>
+        <div *ngIf="room" class="group_info text-center mb-3 p-2 border-bottom border-light clearfix">
+          <p class="group_name"><b>{{room.name}}</b></p>
         </div>
 
         <div #scrollMe [scrollTop]="scrollMess" class="msg_history">
           <div *ngFor="let item of documents">
-            <div *ngIf="!item.me" class="incoming_msg">
-              <div class="incoming_msg_img">
-                <img *ngIf="item.user.avatar" class="avatar" src="{{item.user.avatar}}" alt="">
-                <img *ngIf="!item.user.avatar" class="avatar" src="/assets/img/avatar.png" alt="">
+
+            <div *ngIf="item.type=='sts'">
+              <p class="text-center"><small [innerHTML]="item.body"></small></p>
+            </div>
+
+            <div *ngIf="item.type!=='sts'">
+              <div *ngIf="!item.me" class="incoming_msg">
+                <div class="incoming_msg_img">
+                  <img *ngIf="item.user.avatar" class="avatar" src="{{item.user.avatar}}" alt="">
+                  <img *ngIf="!item.user.avatar" class="avatar" src="/assets/img/avatar.png" alt="">
+                </div>
+                <div class="received_msg">
+                  <div class="received_withd_msg">
+                    <b class="msg_name">{{item.user.name}}</b>
+                    <p *ngIf="item.type=='text'" [innerHTML]="item.body" class="material-tooltip-smaller"
+                      data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{item.time}}"></p>
+                  </div>
+                </div>
               </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <b class="msg_name">{{item.user.name}}</b>
+
+              <div *ngIf="item.me" class="outgoing_msg">
+                <div class="sent_msg">
                   <p *ngIf="item.type=='text'" [innerHTML]="item.body" class="material-tooltip-smaller"
-                  data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{item.time}}"></p>
+                    data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{item.time}}"></p>
                 </div>
               </div>
             </div>
 
-            <div *ngIf="item.me" class="outgoing_msg">
-              <div class="sent_msg">
-                <p *ngIf="item.type=='text'" [innerHTML]="item.body" class="material-tooltip-smaller"
-                  data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{item.time}}"></p>
-              </div>
-            </div>
           </div>
 
           <div *ngIf="typing" class="typing_status">
@@ -96,7 +100,7 @@
                   class="write_msg md-textarea form-control" placeholder="Nhập tin nhắn..." #msg
                   (keyup)="onTyping($event)" [disabled]="!typingEnabled"></textarea>
               </div>
-              <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+              <!-- <i class="fa fa-paperclip attachment" aria-hidden="true"></i> -->
               <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             </form>
           </div>

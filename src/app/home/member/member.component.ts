@@ -40,14 +40,16 @@ export class MemberComponent implements OnInit {
 
     //nhan thong bao co user moi online
     this.socketService.get('server_send_user_status').subscribe((data: User) => {
-      this.messageService.flashInfo(`${data.name} đang online...`);
+      const name = data.name || 'Ai đó';
+      this.messageService.flashInfo(`${name} vừa online`);
       this.members.push(data);
       this.members = _.orderBy(this.members, ['id'], ['desc']);
     });
 
     //xoa user khoi danh sach
     this.socketService.get('server_send_remove_me').subscribe((data) => {
-      this.messageService.flashWarning(`${data.name} đã thoát...`);
+      const name = data.name || 'Ai đó';
+      this.messageService.flashWarning(`${name} vừa thoát`);
       this.members = _.remove(this.members, e => e.id !== data.id);
     });
   }

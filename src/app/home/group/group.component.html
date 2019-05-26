@@ -1,9 +1,10 @@
-<div *ngIf="groups">
+<div *ngIf="groups" #scrollMe [scrollTop]="scrollMess">
   <div *ngFor="let item of groups" class="chat_list" [ngClass]="{'active_chat':room.id==item._id}"
-    (click)="joinGroup(item)">
+    (click)="onClickJoinRoom(item)">
     <div class="chat_people clearfix">
       <div class="chat_ib clearfix">
-        <div class="chat_img" *ngIf="item.avatar"> <img src="{{item.avatar}}"> </div>
+        <img *ngIf="item.avatar" class="avatar" src="{{item.avatar}}">
+        <img *ngIf="!item.avatar" class="avatar" src="/assets/img/avatar.png">
         <h5>{{item.name}}</h5>
         <p *ngIf="item.members.length">{{item.members.length}} thành viên</p>
       </div>

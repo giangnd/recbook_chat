@@ -3,5 +3,5 @@ export class Document {
     room_id: string;
     type: string;
     body: string;
-    time: string;
+    time?: string;
 }

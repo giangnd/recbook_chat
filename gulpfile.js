@@ -15,14 +15,14 @@ const distDir = './src/assets/dist';
 var vendorJs = [
     './vendor/MDBootstrap/js/jquery-3.4.0.min.js',
     './vendor/MDBootstrap/js/bootstrap.min.js',
-    './vendor/MDBootstrap/js/mdb.min.js',
     './vendor/MDBootstrap/js/popper.min.js',
+    './vendor/MDBootstrap/js/mdb.min.js',
     './src/assets/js/custom.js',
 ]
 
 var vendorCss = [
     './vendor/MDBootstrap/css/bootstrap.min.css',
-    './vendor/MDBootstrap/css/mdb.min.css',
+    './src/assets/css/compiled-4.8.1.min.css',
 ]
 
 gulp.task('js', () => {

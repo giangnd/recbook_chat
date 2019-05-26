@@ -24,14 +24,15 @@ const routes: Routes = [
       {
         path: 'user',
         loadChildren: () => UserModule,
-      }
+        data: {
+          preload: true,
+        }
+      },
     ],
     resolve: {
       UserResolver,
     },
-    data: {
-      preload: true,
-    }
+   
   },
   {
     path: 'auth',

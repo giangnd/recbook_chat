@@ -17,6 +17,10 @@ class UserService {
         private storageService: StorageService,
     ) { }
 
+    invite(room_id: string, members: any): Observable<User[]> {
+        return this.apiConnector.requestAPI('post', `/user/invite/${room_id}`, { members: members });
+    }
+
     list(name: string): Observable<User[]> {
         return this.apiConnector.requestAPI('get', `/user/all/?name=${name}`);
     }

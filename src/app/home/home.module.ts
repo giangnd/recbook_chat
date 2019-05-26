@@ -11,6 +11,7 @@ import { AddMemberComponent } from './group/modal/add-member.component';
 import { SharedModule } from '../shared/shared.module';
 import { MemberComponent } from './member/member.component';
 import { MessageComponent } from './message/message.component';
+import { ConfirmationModalComponent } from './group/modal/confirm.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { MessageComponent } from './message/message.component';
     MemberComponent,
     AddMemberComponent,
     MessageComponent,
+    ConfirmationModalComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,7 @@ import { MessageComponent } from './message/message.component';
   entryComponents: [
     CreateGroupComponent,
     AddMemberComponent,
+    ConfirmationModalComponent,
   ]
 })
 export class HomeModule { }

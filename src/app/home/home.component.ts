@@ -1,5 +1,5 @@
 import { User } from './../models/user';
-import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter, Compiler } from '@angular/core';
 import { SocketService } from '../shared/services/socket.services';
 import { UserService } from '../shared/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,8 +27,6 @@ export class HomeComponent implements OnInit {
   };
   documents: any = [];
 
-  myGroup: boolean = false;
-
   room: any = {
     id: '',
     name: '',
@@ -43,10 +41,14 @@ export class HomeComponent implements OnInit {
   typingBreak: boolean = false;
   typingEnabled: boolean = false;
 
+  myGroup: boolean = false;
+  allowLeaveRoom: boolean = false;
+
   @ViewChild('groupCtrl') groupCtrl: GroupComponent;
   @ViewChild('memberCtrl') memberCtrl: MemberComponent;
 
   constructor(
+    private compiler: Compiler,
     private router: Router,
     private activedRouter: ActivatedRoute,
     private userService: UserService,
@@ -59,6 +61,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.compiler.clearCache();
+
     this.activatedRoute.data.subscribe((data) => {
       this.user = data.UserResolver;
       this.socketService.send('client_send_user_info', this.user);
@@ -68,7 +72,7 @@ export class HomeComponent implements OnInit {
     //thong tin room hien tai
     this.socketService.get('server_send_room_info').subscribe((room) => {
       this.room = room;
-      this.onGetDocumentsInRoom();
+      // this.onGetDocumentsInRoom();
     });
 
     //nhan trang thai dang typing message
@@ -84,13 +88,13 @@ export class HomeComponent implements OnInit {
     });
 
     //nhan danh sach lich su tai lieu
-    this.socketService.get('server_send_history_documents').subscribe((documents: any) => {
-      documents = _.map(documents, e => {
-        e.time = moment().format(dateFormat);
-        if (e.user.id == this.user.id) e.me = true; return e;
-      });
-      this.documents = documents;
-    });
+    // this.socketService.get('server_send_history_documents').subscribe((documents: any) => {
+    //   documents = _.map(documents, e => {
+    //     e.time = moment().format(dateFormat);
+    //     if (e.user.id == this.user.id) e.me = true; return e;
+    //   });
+    //   this.documents = documents;
+    // });
 
     //nhan va gui tin nhan den client
     this.socketService.get('server_send_document_this_client').subscribe((document: any) => {
@@ -118,17 +122,24 @@ export class HomeComponent implements OnInit {
   receiveGroup(event: any) {
     this.myGroup = event.myRoom;
     this.room = event.room;
+    this.allowLeaveRoom = true;
 
     this.onGetDocumentsInRoom();
 
     // this.memberCtrl.getMembersInGroup(event);
   }
 
+  onLeaveGroup() {
+    this.groupCtrl.leaveGroup();
+    this.documents = [];
+    this.typingEnabled = false;
+  }
+
   onGetDocumentsInRoom() {
-    this.typingEnabled = true;
     this.documents = [];
     this.documentService.list(this.user.id, this.room.id).subscribe((data) => {
       this.documents = data;
+      this.typingEnabled = true;
     });
   }
 
@@ -136,7 +147,7 @@ export class HomeComponent implements OnInit {
     this.groupCtrl.createGroup();
   }
 
-  addMoreMember(){
+  addMoreMember() {
     this.groupCtrl.addUserToGroup();
   }
 

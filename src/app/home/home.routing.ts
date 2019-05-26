@@ -1,3 +1,4 @@
+import { MessageComponent } from './message/message.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
@@ -19,13 +20,13 @@ const routes: Routes = [
             //     component: HistoryComponent,
             // },
             {
-                path: 'groups',
-                component: GroupComponent,
+                path: 't/:id',
+                component: MessageComponent,
+                data: {
+                    preload: true,
+                }
             }
         ],
-        data: {
-            preload: true,
-        }
     },
 
 ];

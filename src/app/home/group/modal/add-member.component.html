@@ -12,14 +12,30 @@
             </div>
             <div class="modal-body">
                 <div class="md-form">
-                    <input type="text" [(ngModel)]="newMembers" #name="ngModel" name="name" class="form-control"
-                        autocomplete="off" required>
-                    <label for="form1">Tìm thành viên...</label>
+                    <input type="hidden" [(ngModel)]="selectedUsers" #members="ngModel" name="members" required>
+
+
+                    <input id="form1" type="text" [(ngModel)]="inputTxt" #name="ngModel" name="name"
+                        class="form-control" autocomplete="off" (ngModelChange)="findingUser()"
+                        (mousedown)="onMouseDown()" (mouseover)="mouseover()" [disabled]="!allUsers">
+
+                    <ul *ngIf="loadUsers && openLoading" class="mdb-autocomplete-wrap list-unstyled">
+                        <!-- <li *ngIf="onAll" (click)="selectAllUsers()">Chọn tất cả thành viên</li> -->
+
+                        <li *ngFor="let item of loadUsers" style="list-style: none" (click)="selectUser(item)">
+                            {{item.name}}</li>
+                    </ul>
+                    <label for="form1">Chọn thành viên...</label>
+
+                    <p *ngIf="selectedUsers">
+                        <a *ngFor="let item of selectedUsers" class="badge badge-default mr-1">{{item.name}} <i
+                                class="fa fa-remove" aria-hidden="true" (click)="removeSelected(item)"></i></a>
+                    </p>
                 </div>
-                <validate-message [label]="'Tên thanh viên'" [input]="name"></validate-message>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="submit" class="btn btn-primary touch" [disabled]="groupForm.invalid">{{button}}</button>
+                <button type="submit" class="btn btn-primary touch"
+                    [disabled]="!selectedUsers.length">{{button}}</button>
                 <button type="button" class="btn btn-secondary touch" (click)="close()"
                     data-dismiss="modal">Hủy</button>
             </div>

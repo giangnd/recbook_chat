@@ -17,7 +17,7 @@ class GroupService {
         return this.apiConnector.requestAPI('post', '/group', data);
     }
 
-    update(id: string, data: Group): Observable<any> {
+    update(id: string, data: any): Observable<any> {
         return this.apiConnector.requestAPI('patch', `/group/${id}`, data)
     }
 
