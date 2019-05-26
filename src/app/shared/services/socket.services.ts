@@ -1,8 +1,9 @@
 import * as io from 'socket.io-client';
 import { Observable, of } from 'rxjs';
+import { environment } from './../../../environments/environment';
 
 export class SocketService {
-    private url = 'http://localhost:3001';
+    private url = environment.SOCKET_PATH;
     private socket: any;
 
     constructor() {

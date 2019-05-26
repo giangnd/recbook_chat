@@ -94,7 +94,7 @@
 
         <div class="type_msg">
           <div class="input_msg_write">
-            <form #msgForm="ngForm" (ngSubmit)="onSendMsg()" (keyup.enter)="onSendMsg($event)">
+            <form #msgForm="ngForm" (ngSubmit)="onSendMsg($event)" (keyup.enter)="onSendMsg($event)">
               <div class="">
                 <textarea [(ngModel)]="document.body" name="message" id="write_msg"
                   class="write_msg md-textarea form-control" placeholder="Nhập tin nhắn..." #msg

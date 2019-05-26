@@ -5,6 +5,7 @@ const config = require('./config.json');
 export const environment = {
   production: false,
   API_PATH: "http://localhost:3000/api",
+  SOCKET_PATH: "http://localhost:3001",
   appName: config.appName,
 };
 
