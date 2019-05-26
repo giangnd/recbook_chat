@@ -1,5 +1,5 @@
 import { User } from './../models/user';
-import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter, Compiler } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { SocketService } from '../shared/services/socket.services';
 import { UserService } from '../shared/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -48,7 +48,6 @@ export class HomeComponent implements OnInit {
   @ViewChild('memberCtrl') memberCtrl: MemberComponent;
 
   constructor(
-    private compiler: Compiler,
     private router: Router,
     private activedRouter: ActivatedRoute,
     private userService: UserService,
@@ -61,8 +60,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.compiler.clearCache();
-
     this.activatedRoute.data.subscribe((data) => {
       this.user = data.UserResolver;
       this.socketService.send('client_send_user_info', this.user);
