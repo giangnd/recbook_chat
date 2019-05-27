@@ -70,9 +70,9 @@ gulp.task('images', () => {
 gulp.task('clean-client-cache', () => {
     const version = new Date().getTime();
     return gulp.src('./src/index.html')
-        .pipe(replace(/\/assets\/dist\/css\/style.css/g, `/assets/dist/css/style.css?v=${version}`))
-        .pipe(replace(/\/assets\/dist\/css\/vendor.css/g, `/assets/dist/css/vendor.css?v=${version}`))
-        .pipe(replace(/\/assets\/dist\/js\/vendor.js/g, `/assets/dist/js/vendor.js?v=${version}`))
+        .pipe(replace(/assets\/dist\/css\/style.css/g, `assets/dist/css/style.css?v=${version}`))
+        .pipe(replace(/assets\/dist\/css\/vendor.css/g, `assets/dist/css/vendor.css?v=${version}`))
+        .pipe(replace(/assets\/dist\/js\/vendor.js/g, `assets/dist/js/vendor.js?v=${version}`))
         .pipe(gulp.dest('./src/'));
 });
 

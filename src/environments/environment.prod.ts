@@ -1,7 +1,7 @@
 const config = require('./config.json');
 export const environment = {
   production: true,
-  API_PATH: "https://recbook-chat-api.herokuapp.com/api",
-  SOCKET_PATH: "https://recbook-chat-socket.herokuapp.com",
+  API_PATH: "https://recbook-api.appspot.com/api",
+  SOCKET_PATH: "https://socket-dot-recbook-api.appspot.com",
   appName: config.appName,
 };
