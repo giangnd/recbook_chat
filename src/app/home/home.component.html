@@ -6,7 +6,7 @@
         <div *ngIf="user" class="user_info mb-1 p-2 border-bottom border-light clearfix">
           <div class="pull-left">
             <img *ngIf="user.avatar" class="avatar" src="{{user.avatar}}" alt="">
-            <img *ngIf="!user.avatar" class="avatar" src="/assets/img/avatar.png" alt="">
+            <img *ngIf="!user.avatar" class="avatar" src="assets/img/avatar.png" alt="">
             <p class="info_name">
               <b>Hi {{user.name}},</b>
               <br>
@@ -65,7 +65,7 @@
               <div *ngIf="!item.me" class="incoming_msg">
                 <div class="incoming_msg_img">
                   <img *ngIf="item.user.avatar" class="avatar" src="{{item.user.avatar}}" alt="">
-                  <img *ngIf="!item.user.avatar" class="avatar" src="/assets/img/avatar.png" alt="">
+                  <img *ngIf="!item.user.avatar" class="avatar" src="assets/img/avatar.png" alt="">
                 </div>
                 <div class="received_msg">
                   <div class="received_withd_msg">
