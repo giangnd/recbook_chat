@@ -105,14 +105,15 @@
 
                 <div *ngIf="document.type=='file'" id="file_msg">
                   <ul class="list-unstyled">
-                    <li *ngFor="let item of files" class="file_name">{{item.name}} <i (click)="removeFile(item)" class="fa fa-remove"></i></li>
+                    <li *ngFor="let item of files" class="file_name">{{item.name}} <i (click)="removeFile(item)"
+                        class="fa fa-remove"></i></li>
                   </ul>
                 </div>
               </div>
 
               <div id="btns_area">
                 <i (click)="chooseFiles()" class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                <input type="file" name="file[]" #file (change)="onFilesAdded($event)" multiple class="hidden"
+                <input type="file" name="file[]" #file (change)="onFilesAdded($event)" multiple style="display: none"
                   accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/plain">
                 <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
               </div>
