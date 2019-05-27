@@ -31,6 +31,9 @@ import { ConfirmationModalComponent } from './group/modal/confirm.component';
     HomeRouting,
     SharedModule,
   ],
+  exports: [
+    AuthenticatedComponent,
+  ],
   providers: [],
   entryComponents: [
     CreateGroupComponent,

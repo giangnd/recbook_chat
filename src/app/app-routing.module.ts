@@ -19,24 +19,23 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => HomeModule,
+        loadChildren: 'src/app/home/home.module#HomeModule',
       },
       {
         path: 'user',
-        loadChildren: () => UserModule,
-        data: {
-          preload: true,
-        }
+        loadChildren: 'src/app/user/user.module#UserModule',
       },
     ],
     resolve: {
       UserResolver,
     },
-   
+    data: {
+      preload: true,
+    }
   },
   {
     path: 'auth',
-    loadChildren: () => AuthenticationModule,
+    loadChildren: 'src/app/authentication/authentication.module#AuthenticationModule',
     canActivate: [UnAuthGuardService],
   },
   {
