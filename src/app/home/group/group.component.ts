@@ -55,7 +55,7 @@ export class GroupComponent implements OnInit {
     //them room moi vao danh sach neu toi da accept vao room do
     this.socketService.get('server_send_join_new_room').subscribe((data) => {
       if (_.find(data.users, e => e == this.user.id) && this.user.id != data.user_id) {
-        this.messageService.flashInfo(`Nhóm mới: ${data.group.name}`);
+        this.messageService.flashInfo(`Bạn đã tham gia vào nhóm ${data.group.name}`);
         this.groups.unshift(data.group);
         this.onScroll();
         // this.onClickJoinRoom(data.group);

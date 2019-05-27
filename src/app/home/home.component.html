@@ -93,15 +93,30 @@
         </div>
 
         <div class="type_msg">
-          <div class="input_msg_write">
+          <div class="input_msg_write clearfix">
             <form #msgForm="ngForm" (ngSubmit)="onSendMsg($event)" (keyup.enter)="onSendMsg($event)">
-              <div class="">
-                <textarea [(ngModel)]="document.body" name="message" id="write_msg"
-                  class="write_msg md-textarea form-control" placeholder="Nhập tin nhắn..." #msg
-                  (keyup)="onTyping($event)" [disabled]="!typingEnabled"></textarea>
+
+              <div id="msg_area">
+                <div *ngIf="document.type=='text'">
+                  <textarea [(ngModel)]="document.body" name="message" id="write_msg"
+                    class="write_msg md-textarea form-control" placeholder="Nhập tin nhắn..." #msg
+                    (keyup)="onTyping($event)" [disabled]="!typingEnabled"></textarea>
+                </div>
+
+                <div *ngIf="document.type=='file'" id="file_msg">
+                  <ul class="list-unstyled">
+                    <li *ngFor="let item of files" class="file_name">{{item.name}} <i (click)="removeFile(item)" class="fa fa-remove"></i></li>
+                  </ul>
+                </div>
               </div>
-              <!-- <i class="fa fa-paperclip attachment" aria-hidden="true"></i> -->
-              <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+
+              <div id="btns_area">
+                <i (click)="chooseFiles()" class="fa fa-paperclip attachment" aria-hidden="true"></i>
+                <input type="file" name="file[]" #file (change)="onFilesAdded($event)" multiple class="hidden"
+                  accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/plain">
+                <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+              </div>
+
             </form>
           </div>
         </div>

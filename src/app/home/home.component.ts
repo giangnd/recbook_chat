@@ -36,6 +36,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('scrollMe') item: ElementRef;
   scrollMess: number = null;
 
+  @ViewChild('file') file: ElementRef;
+   files: Array<File>;
+
   typing: string;
   typingTimeout: any;
   typingBreak: boolean = false;
@@ -84,15 +87,6 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    //nhan danh sach lich su tai lieu
-    // this.socketService.get('server_send_history_documents').subscribe((documents: any) => {
-    //   documents = _.map(documents, e => {
-    //     e.time = moment().format(dateFormat);
-    //     if (e.user.id == this.user.id) e.me = true; return e;
-    //   });
-    //   this.documents = documents;
-    // });
-
     //nhan va gui tin nhan den client
     this.socketService.get('server_send_document_this_client').subscribe((document: any) => {
       document.time = moment().format(dateFormat);
@@ -112,6 +106,10 @@ export class HomeComponent implements OnInit {
     this.socketService.get('server_send_existed_user').subscribe(() => {
       this.userService.logout();
       this.messageService.flashWarning('Bạn đang đăng nhập trên 1 thiết khác. Vui lòng thử lại sau.');
+    });
+
+    this.socketService.get('server_send_leave_a_room').subscribe((room) => {
+      this.room = room;
     });
 
   }
@@ -158,22 +156,78 @@ export class HomeComponent implements OnInit {
     clearTimeout(this.typingTimeout);
   }
 
+  uploadFiles() {
+    let formData = new FormData()
+    for (var i = 0; i < this.files.length; i++) {
+      for (let key in this.files[i]) {
+        console.log(key);
+      }
+      // console.log(i)
+      // formData.append("uploads[]", this.files[i], this.files[i].name);
+    }
+    // console.log(formData);
+    // this.http.post('/api/upload', formData)
+    //   .subscribe((response) => {
+    //     console.log('response received is ', response);
+    //   })
+  }
+
   onSendMsg(e: any) {
-    this.document.body = this.document.body.trim();
-    if (!this.document.body.length) {
-      return;
+    if (this.document.type == 'text') {
+
+    }
+
+    switch (this.document.type) {
+      case 'file':
+        if (!this.files) {
+          return;
+        }
+        this.uploadFiles();
+        break;
+
+      case 'text':
+      default:
+        this.document.body = this.document.body.trim();
+        if (!this.document.body.length) {
+          return;
+        }
+        break;
     }
 
     this.socketService.send('client_send_document', this.document).subscribe(res => {
       this.document.user_id = this.user.id;
       this.document.room_id = this.room.id;
-
       this.documentService.create(this.document).subscribe((res) => {
         this.document.body = '';
       });
-
-
     });
+  }
+
+  chooseFiles() {
+    this.file.nativeElement.click();
+  }
+
+  onFilesAdded(e: any) {
+    this.files = e.target.files;
+    console.log(this.files);
+    // const files: { [key: string]: File } = this.file.nativeElement.files;
+    // for (let key in files) {
+    //   if (!isNaN(parseInt(key))) {
+    //     this.files.add(files[key]);
+    //   }
+    // }
+    // if (this.files.size) {
+    //   this.document.type = 'file';
+    //   this.document.body = this.files;
+    // }
+  }
+
+  removeFile(file) {
+    // this.files.delete(file);
+    // if (!this.files.size) {
+    //   this.document.type = 'text';
+    //   this.document.body = '';
+    // }
   }
 
   onScroll() {

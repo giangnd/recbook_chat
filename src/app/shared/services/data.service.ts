@@ -19,6 +19,7 @@ export class DataService {
         uri = environment.API_PATH + uri;
         let headers: HttpHeaders = new HttpHeaders();
         headers = headers.append('Content-Type', 'application/json');
+        headers = headers.append('Access-Control-Allow-Origin', '*');
         headers = headers.append('Authorization', 'Bearer ' + this.tokenService.getToken());
         method = method.toLowerCase();
         if (method === 'delete') {
