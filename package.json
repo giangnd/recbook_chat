@@ -30,7 +30,7 @@
     "gulp-replace": "^1.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-uglify": "^3.0.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "moment-timezone": "^0.5.25",
     "ng-flash-messages": "^0.3.0",
     "ngx-bootstrap": "^4.2.0",
